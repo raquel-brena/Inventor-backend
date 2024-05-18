@@ -2,7 +2,9 @@ package com.rb.auth.controllers;
 
 import com.rb.auth.domain.user.AuthenticatedDTO;
 import com.rb.auth.domain.user.RegisterDTO;
+import com.rb.auth.domain.user.ResponseLoginDTO;
 import com.rb.auth.domain.user.User;
+import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
@@ -24,6 +26,9 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     UserRepository repository;
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticatedDTO data){
@@ -31,7 +36,9 @@ public class AuthenticationController {
 
         var auth = this.authenticationManager.authenticate(userNamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User)auth.getPrincipal());
+
+        return ResponseEntity.ok(new ResponseLoginDTO(token));
     }
 
     @PostMapping("/register")
@@ -40,7 +47,7 @@ public class AuthenticationController {
 
      String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
-     this.repository.save( new User(data.login(),encryptedPassword, data.role()));
+     this.repository.save(new User(data.login(),encryptedPassword, data.role()));
      return ResponseEntity.ok().build();
     }
 
