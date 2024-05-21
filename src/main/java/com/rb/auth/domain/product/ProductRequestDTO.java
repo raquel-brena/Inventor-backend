@@ -3,6 +3,10 @@ package com.rb.auth.domain.product;
 
 public record ProductRequestDTO(
         String name,
-        Integer price
+        String description,
+        String sku,
+        Integer price,
+        Category category,
+        Integer quantity
 ) {
 }
