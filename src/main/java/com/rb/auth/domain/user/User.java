@@ -21,18 +21,20 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @Column(nullable = false, unique = true)
     private String login;
+
+    @Column(nullable = false)
     private String password;
+
     private UserRole role;
 
-    public User(String login, String password, UserRole role){
+    public User(String login, String password){
         this.login = login;
         this.password = password;
-        this.role = role;
+        this.role = UserRole.USER;
     }
-
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
