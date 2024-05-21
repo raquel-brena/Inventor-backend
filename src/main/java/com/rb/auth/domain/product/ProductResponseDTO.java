@@ -1,7 +1,11 @@
 package com.rb.auth.domain.product;
 
-public record ProductResponseDTO(String id, String name, Integer price) {
+import java.util.List;
+
+public record ProductResponseDTO(String name, Integer price, String sku, String description, Category category, Integer quantity) {
     public ProductResponseDTO(Product product){
-        this(product.getId(), product.getName(), product.getPrice());
+        this(product.getName(), product.getPrice(),product.getSku(), product.getDescription(), product.getCategory(), product.getQuantity());
     }
+
+
 }
