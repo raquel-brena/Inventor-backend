@@ -7,15 +7,12 @@ import com.rb.auth.domain.user.User;
 import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
-
-import javax.management.relation.Role;
 
 @RestController
 @RequestMapping("auth")
