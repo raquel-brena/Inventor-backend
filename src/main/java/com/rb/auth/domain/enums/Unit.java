@@ -1,10 +1,10 @@
 package com.rb.auth.domain.enums;
 
+
+
 public enum Unit {
     EACH ("each"),
-    KILOGRAM("kg"),
-    LITRE("litre"),
-    GRAM("gram");
+    PACK("pack");
 
     private String unit;
 
