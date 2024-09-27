@@ -1,6 +1,7 @@
 package com.rb.auth.domain.history;
 
 import com.rb.auth.domain.product.Product;
+import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.user.User;
 
 
@@ -18,6 +19,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Table (name = "action_record")
 @Entity  (name = "action_record")
 @Getter
@@ -31,13 +34,19 @@ public class ActionRecord  {
     private Long id;
 
     @ManyToOne
+    private Stock stockId;
+
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private User author;
+    private Stock author;
 
     @Column(nullable = false)
     private String action;
+
+    @Column(nullable = false)
+    private Date dateAction;
 }

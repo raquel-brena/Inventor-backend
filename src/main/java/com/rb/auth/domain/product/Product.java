@@ -65,16 +65,16 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     private Unit unit;
-    
-    @OneToMany(mappedBy = "product")
-    private List<ActionRecord> history;
+
+    /*  @ManyToOne
+    private List<ActionRecord> history;*/
 
     @OneToMany (mappedBy = "product")
     private List<Note> notes;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn (name="stock_id", referencedColumnName = "id")
-    private Stock stock;
+    private Stock stockId;
 
     public Product(CreateProductRequestDTO data){
         this.name = data.name();
@@ -88,6 +88,5 @@ public class Product {
         this.category = data.category();
         this.sku = data.sku();
         this.variants = data.variants();
-        this.stock = data.stock();
     }
 }
