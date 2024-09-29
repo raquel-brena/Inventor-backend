@@ -1,23 +1,24 @@
 package com.rb.auth.domain.store;
 
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.product.Product;
+import com.rb.auth.domain.sale.Sale;
 import com.rb.auth.domain.stock.Stock;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "stores")
 @Entity(name = "stores")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Store  {
+public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -25,16 +26,18 @@ public class Store  {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne (mappedBy = "storeId")
-    private Address addressId;
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
-    @OneToOne (mappedBy = "storeId")
-    private Stock stockId;
+    @OneToOne
+    @JoinColumn(name = "stock_id", referencedColumnName = "id")
+    private Stock stock;
 
-    private Date createAt;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Sale> sales;
 
-    public Store (CreateStoreResponseDTO store) {
-        this.name = store.name();
-        this.addressId = store.address();
-    }
+    @CreationTimestamp
+    @Column(name = "created_at",nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
