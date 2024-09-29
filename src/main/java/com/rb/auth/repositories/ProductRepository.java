@@ -13,5 +13,5 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @SuppressWarnings("null")
     Optional<Product> findById(String id);
     Optional<Product> findBySku(String sku);
-   List<Product> findByCategory(Category category);
+   //List<Product> findByCategoryIn(Category category);
 }

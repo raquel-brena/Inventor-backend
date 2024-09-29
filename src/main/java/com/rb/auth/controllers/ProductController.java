@@ -21,16 +21,14 @@ public class ProductController {
     @Autowired
     ProductRepository repository;
 
-    @PostMapping
-    public ResponseEntity<CreateProductResponseDTO> createProduct(@RequestBody @Validated CreateProductRequestDTO body){
+    public Product createProduct(CreateProductRequestDTO body){
         var product = this.repository.findBySku(body.sku());
         if (product.isEmpty()) {
-            Product newProduct = new Product(body);
+            var newProduct = new Product(body);
 
-            this.repository.save(newProduct);
-            return ResponseEntity.ok().build();
+            return this.repository.save(newProduct);
         }
-        return ResponseEntity.badRequest().build();
+        return null;
     }
 
     @PutMapping
@@ -53,13 +51,20 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CreateProductResponseDTO> getProduct(@PathVariable String id) {
-        var product = this.repository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
+        var product = getProductById(id);
 
         CreateProductResponseDTO productDto = new CreateProductResponseDTO(product);
         return ResponseEntity.ok(productDto);
     }
-
+//    @GetMapping("/{category}")
+//    public ResponseEntity getByCategory (@PathVariable Category category) {
+//        List<CreateProductResponseDTO> products = this.repository.findByCategoryIn(category)
+//                .stream()
+//                .map(CreateProductResponseDTO::new)
+//                .toList();
+//
+//        return ResponseEntity.ok(products);
+//    }
     @GetMapping
     public ResponseEntity getAllProducts(){
         System.out.println("pegando produtos");
@@ -71,13 +76,10 @@ public class ProductController {
         return ResponseEntity.ok(productList);
     }
 
-    @GetMapping("/{category}")
-    public ResponseEntity getByCategory (@PathVariable Category category) {
-        List<CreateProductResponseDTO> products = this.repository.findByCategory(category)
-                .stream()
-                .map(CreateProductResponseDTO::new)
-                .toList();
-
-        return ResponseEntity.ok(products);
+    public Product getProductById (String id) {
+       return this.repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
+
+
 }
