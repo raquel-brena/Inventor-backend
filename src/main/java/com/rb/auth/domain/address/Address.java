@@ -2,14 +2,15 @@ package com.rb.auth.domain.address;
 
 import com.rb.auth.domain.store.Store;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Table(name = "address")
 @Entity(name = "address")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -37,6 +38,7 @@ public class Address {
     @Column(nullable = false)
     private Integer number;
 
-    public Address(String state, String city, String s, String neighborhood, Integer number) {
-    }
+    @CreationTimestamp
+    @Column(name = "created_at",nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
