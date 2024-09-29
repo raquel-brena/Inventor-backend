@@ -1,5 +1,7 @@
 package com.rb.auth.domain.stock;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rb.auth.domain.history.ActionRecord;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.store.Store;
@@ -9,7 +11,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -26,17 +30,17 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne (mappedBy = "stockId")
-    private Store storeId;
-
+    @JsonIgnore
     @OneToOne (mappedBy = "stock")
-    private Product products;
+    private Store store;
+    
+    @OneToMany (mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<Product> products;
 
-    @OneToMany
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<ActionRecord> history;
 
-    private int onHand;
-    private int toBeReceived;
-    private int toBePacked;
-
+    @CreationTimestamp
+    @Column(name = "created_at",nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
