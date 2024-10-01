@@ -23,8 +23,9 @@ public class SecurityConfiguration {
 
     @Autowired
     SecurityFilter securityFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
@@ -37,16 +38,18 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/product/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/stock/**").permitAll()
                         .anyRequest().authenticated())
-                        .exceptionHandling(Customizer.withDefaults())
+                .exceptionHandling(Customizer.withDefaults())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder (){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

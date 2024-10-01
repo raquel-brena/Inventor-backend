@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/unit")
-public class UnitController {   
+public class UnitController {
 
     @GetMapping
     public ResponseEntity<List<String>> getStatus() {
         var units = Arrays.stream(Unit.values())
-        .map(Unit::getUnit)
-        .collect(Collectors.toList());
+                .map(Unit::getUnit)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(units);
-}
+    }
 }

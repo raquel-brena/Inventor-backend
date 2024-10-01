@@ -19,22 +19,22 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Stock {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
-    @OneToOne (mappedBy = "stock")
+    @OneToOne(mappedBy = "stock")
     private Store store;
-    
-    @OneToMany (mappedBy = "stock", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<Product> products;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<ActionRecord> history;
 
     @CreationTimestamp
-    @Column(name = "created_at",nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/status")
 public class StatusController {
-    
+
     @GetMapping
     public ResponseEntity<List<String>> getStatus() {
         var status = Arrays.stream(Status.values())
-        .map(Status::getStatus)
-        .collect(Collectors.toList());
+                .map(Status::getStatus)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(status);
-}
+    }
 }

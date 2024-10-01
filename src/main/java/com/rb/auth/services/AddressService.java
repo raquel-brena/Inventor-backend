@@ -13,7 +13,7 @@ public class AddressService {
     AddressRepository repository;
 
 
-    public Address createAddress(CreateAddressDTO dto){
+    public Address createAddress(CreateAddressDTO dto) {
         var address = new Address();
 
         address.setCity(dto.city());

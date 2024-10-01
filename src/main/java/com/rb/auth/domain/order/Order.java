@@ -8,8 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Table (name = "orders")
-@Entity  (name = "orders")
+@Table(name = "orders")
+@Entity(name = "orders")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -35,6 +35,6 @@ public class Order {
     private float totalPrice;
 
     @CreationTimestamp
-    @Column(name = "created_at",nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

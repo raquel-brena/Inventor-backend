@@ -1,10 +1,7 @@
 package com.rb.auth.services;
 
-import com.rb.auth.controllers.SaleController;
-import com.rb.auth.controllers.StockController;
 import com.rb.auth.controllers.UserController;
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.sale.CreatedSaleDTO;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -40,7 +36,7 @@ public class StoreService implements IStoreService {
     StockService stockService;
 
     @Transactional
-    public String createStore (CreateStoreResponseDTO dto) {
+    public String createStore(CreateStoreResponseDTO dto) {
         System.out.println(dto.address().state());
         Address address = this.addressService.createAddress(dto.address());
 
@@ -94,25 +90,25 @@ public class StoreService implements IStoreService {
         return "";
     }
 
-    public Store getStore (String id) {
+    public Store getStore(String id) {
         var store = this.storeRepository.findById(id);
-        if (store.isEmpty()) throw new Error ("Store doesnt exists");
+        if (store.isEmpty()) throw new Error("Store doesnt exists");
         return store.get();
     }
 
     @Override
-    public String restockProduct(String storeId,String productId, int quantity) {
+    public String restockProduct(String storeId, String productId, int quantity) {
         return null;
     }
 
     @Override
-    public Product findProductByName(String storeId,String productId) {
+    public Product findProductByName(String storeId, String productId) {
         return null;
     }
 
-    public Stock getStock(String storeId){
-        var store =  this.storeRepository.findById(storeId)
-                .orElseThrow(()-> new IllegalArgumentException("Store doesnt exists"));
+    public Stock getStock(String storeId) {
+        var store = this.storeRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
 
         var stock = store.getStock();
         if (stock == null) {
@@ -121,7 +117,6 @@ public class StoreService implements IStoreService {
 
         return stock;
     }
-
 
 
 }

@@ -18,24 +18,25 @@ public class ProductController {
     ProductService service;
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody CreateProductRequestDTO dto){
-       try {var product = this.service.createProduct(dto);
+    public ResponseEntity<String> createProduct(@RequestBody CreateProductRequestDTO dto) {
+        try {
+            var product = this.service.createProduct(dto);
 
-           var location = ServletUriComponentsBuilder
-                   .fromCurrentRequest()
-                   .path("/{id}")
-                   .buildAndExpand(product.getId())
-                   .toUri();
-           return ResponseEntity.created(location).body("Product created with ID: " + product.getId());
-       } catch (IllegalArgumentException e ){
-           return ResponseEntity.badRequest().body(e.getMessage());
-       }
+            var location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(product.getId())
+                    .toUri();
+            return ResponseEntity.created(location).body("Product created with ID: " + product.getId());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping
-    public ResponseEntity<String> updateProduct(@RequestBody @Validated CreateProductRequestDTO dto){
-            var updatedProduct = this.service.updateProduct(dto);
-            return ResponseEntity.ok().body("Product updated with ID: " + updatedProduct.getId());
+    public ResponseEntity<String> updateProduct(@RequestBody @Validated CreateProductRequestDTO dto) {
+        var updatedProduct = this.service.updateProduct(dto);
+        return ResponseEntity.ok().body("Product updated with ID: " + updatedProduct.getId());
     }
 
     @GetMapping("/{id}")
@@ -47,10 +48,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity getAllProducts(){
+    public ResponseEntity getAllProducts() {
         var productResponseDTO = this.service.getAll();
 
-        return ResponseEntity.ok().body("Products: "+ productResponseDTO);
+        return ResponseEntity.ok().body("Products: " + productResponseDTO);
     }
 
     //    @GetMapping("/{category}")
@@ -62,8 +63,6 @@ public class ProductController {
 //
 //        return ResponseEntity.ok(products);
 //    }
-
-
 
 
 }

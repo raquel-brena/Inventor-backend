@@ -50,11 +50,11 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Order> orders;
 
-    @OneToMany (mappedBy = "product")
+    @OneToMany(mappedBy = "product")
     private List<Note> notes;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn (name="stock_id")
+    @JoinColumn(name = "stock_id")
     private Stock stock;
 
     private int onHand;
@@ -62,10 +62,10 @@ public class Product {
     private int toBePacked;
 
     @CreationTimestamp
-    @Column(name = "created_at",nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public Product(CreateProductRequestDTO data){
+    public Product(CreateProductRequestDTO data) {
         this.name = data.name();
         this.description = data.description();
         this.gender = data.gender();

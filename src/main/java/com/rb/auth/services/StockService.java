@@ -1,8 +1,8 @@
 package com.rb.auth.services;
 
 import com.rb.auth.domain.product.CreateProductRequestDTO;
-import com.rb.auth.domain.product.ProductResponseDTO;
 import com.rb.auth.domain.product.Product;
+import com.rb.auth.domain.product.ProductResponseDTO;
 import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.repositories.StockRepository;
@@ -31,10 +31,11 @@ public class StockService {
         Optional<Stock> stock = repository.findById(id);
         return stock.orElseThrow(() -> new Error("Stock not found for ID: " + id));
     }
-    public List<ProductResponseDTO> getProducts (Long id) {
+
+    public List<ProductResponseDTO> getProducts(Long id) {
         var stock = this.repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stock doesnt exists"));
-       return stock.getProducts().stream().map(ProductResponseDTO::new).toList();
+        return stock.getProducts().stream().map(ProductResponseDTO::new).toList();
 
     }
 
@@ -64,7 +65,7 @@ public class StockService {
                         () -> new IllegalArgumentException("Produto com ID " + productId + " não encontrado no estoque com ID: " + stock.getId()));
     }
 
-    public List<Product> updateProductsListById (List<UpdateProductStockDTO> products) {
+    public List<Product> updateProductsListById(List<UpdateProductStockDTO> products) {
         var productList = new ArrayList<Product>();
 
         for (UpdateProductStockDTO product : products) {

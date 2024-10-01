@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Table (name = "action_record")
-@Entity  (name = "action_record")
+@Table(name = "action_record")
+@Entity(name = "action_record")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ActionRecord  {
+public class ActionRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class ActionRecord  {
     private Stock stock;
 
     @ManyToOne
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @ManyToOne

@@ -1,9 +1,8 @@
 package com.rb.auth.domain.enums;
 
 
-
 public enum Unit {
-    EACH ("each"),
+    EACH("each"),
     PACK("pack");
 
     private String unit;
@@ -14,5 +13,5 @@ public enum Unit {
 
     public String getUnit() {
         return unit;
-    }  
+    }
 }

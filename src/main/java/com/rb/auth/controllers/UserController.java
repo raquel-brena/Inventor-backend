@@ -23,7 +23,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    public User getUserById (String id) {
+    public User getUserById(String id) {
         return this.repository.findById(id)
                 .orElseThrow(() -> new Error("User doesnt exists"));
     }

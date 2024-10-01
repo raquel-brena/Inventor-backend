@@ -35,27 +35,29 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository repository;
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticatedDTO data){
+    public ResponseEntity login(@RequestBody @Valid AuthenticatedDTO data) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
 
         var auth = this.authenticationManager.authenticate(userNamePassword);
 
-        var token = tokenService.generateToken((User)auth.getPrincipal());
+        var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return ResponseEntity.ok(new ResponseLoginDTO(token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         try {
-            if (this.repository.findByLogin(data.login()) != null) throw new IllegalArgumentException ("User already exists");
+            if (this.repository.findByLogin(data.login()) != null)
+                throw new IllegalArgumentException("User already exists");
 
             String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
             var role = roleService.findRoleByName("user");
 
-            if (role.isEmpty()) throw new IllegalArgumentException ("Role doesnt exists");
+            if (role.isEmpty()) throw new IllegalArgumentException("Role doesnt exists");
 
             var newUser = this.repository.save(new User(data.login(), encryptedPassword, role.get()));
 
@@ -66,7 +68,7 @@ public class AuthenticationController {
                     .toUri();
 
             return ResponseEntity.created(location).body("New user created with ID: " + newUser.getId());
-        } catch (IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 

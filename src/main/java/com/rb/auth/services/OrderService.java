@@ -11,7 +11,8 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
-    public Order createOrder (Product product, int quantity) {
+
+    public Order createOrder(Product product, int quantity) {
         var totalOrder = product.getRetail_price() * quantity;
 
         var order = new Order();

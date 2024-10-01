@@ -25,7 +25,7 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Optional<Role> findRoleByName (String name) {
+    public Optional<Role> findRoleByName(String name) {
         return this.roleRepository.findByName(name);
     }
 

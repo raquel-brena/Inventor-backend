@@ -37,6 +37,6 @@ public class Store {
     private List<Sale> sales;
 
     @CreationTimestamp
-    @Column(name = "created_at",nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

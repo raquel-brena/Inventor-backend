@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode (of = "id")
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
     @Id
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public User(String login, String password, Role role){
+    public User(String login, String password, Role role) {
         this.login = login;
         this.password = password;
         this.role = role;
@@ -43,9 +43,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       if (this.role.getName().equals("admin")) return
-       List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-       else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role.getName().equals("admin")) return
+                List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

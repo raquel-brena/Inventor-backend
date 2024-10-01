@@ -17,11 +17,12 @@ public class TokenService {
 
     @Value("${api.security.token.secret}")
     private String secret;
-    public String generateToken (User user){
+
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            return  JWT.create()
+            return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getLogin())
                     .withExpiresAt(generateExpirationDate())
@@ -32,11 +33,11 @@ public class TokenService {
         }
     }
 
-    public String validateToken (String token) {
+    public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            return  JWT.require(algorithm)
+            return JWT.require(algorithm)
                     .withIssuer("auth-api")
                     .build()
                     .verify(token)
@@ -45,7 +46,8 @@ public class TokenService {
             return "";
         }
     }
-    private Instant generateExpirationDate(){
+
+    private Instant generateExpirationDate() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }

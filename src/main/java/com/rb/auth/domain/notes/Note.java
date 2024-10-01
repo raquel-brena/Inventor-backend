@@ -8,13 +8,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table (name = "note")
-@Entity (name = "note")
+@Table(name = "note")
+@Entity(name = "note")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode (of = "id")
-public class Note  {
+@EqualsAndHashCode(of = "id")
+public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

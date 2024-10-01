@@ -1,4 +1,4 @@
 package com.rb.auth.domain.user;
 
-public record RegisterDTO (String login, String password){
+public record RegisterDTO(String login, String password) {
 }

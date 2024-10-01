@@ -19,9 +19,9 @@ public class GenderController {
     @GetMapping
     public ResponseEntity<List<String>> getGenders() {
         var genders = Arrays.stream(Gender.values())
-        .map(Gender::getGender)
-        .collect(Collectors.toList());
+                .map(Gender::getGender)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(genders);
-}
+    }
 }

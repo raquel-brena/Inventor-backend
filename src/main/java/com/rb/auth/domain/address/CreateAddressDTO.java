@@ -3,7 +3,7 @@ package com.rb.auth.domain.address;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
-public record CreateAddressDTO (
+public record CreateAddressDTO(
         @NotBlank
         String state,
         @NotBlank

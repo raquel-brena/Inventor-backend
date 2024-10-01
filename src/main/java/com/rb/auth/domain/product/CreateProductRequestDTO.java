@@ -30,18 +30,20 @@ public record CreateProductRequestDTO(
         @NotBlank
         Integer quantity
 ) {
-        public CreateProductRequestDTO(Product product){
-                this(product.getName(),
-                        product.getDescription(),
-                        product.getVariants(),
-                        product.getGender(),
-                        product.getRetail_price(),
-                        product.getWholesale_price(),
-                        product.getSku(),
-                        product.getStatus(),
-                        product.getBarcode(),
-                        product.getUnit(),
-                        product.getCategory(),
+    public CreateProductRequestDTO(Product product) {
+        this(product.getName(),
+                product.getDescription(),
+                product.getVariants(),
+                product.getGender(),
+                product.getRetail_price(),
+                product.getWholesale_price(),
+                product.getSku(),
+                product.getStatus(),
+                product.getBarcode(),
+                product.getUnit(),
+                product.getCategory(),
                 product.getOnHand());
-        };
+    }
+
+    ;
 }

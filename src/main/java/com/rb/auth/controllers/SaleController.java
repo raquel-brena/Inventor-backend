@@ -17,7 +17,7 @@ public class SaleController {
     @Autowired
     SaleService saleService;
 
-    public Sale createNewSale (Stock stock, List<UpdateProductStockDTO> productsDTO, User author, int discount){
+    public Sale createNewSale(Stock stock, List<UpdateProductStockDTO> productsDTO, User author, int discount) {
         var sale = this.saleService.createNewSale(stock, productsDTO, author, discount);
         return sale;
     }

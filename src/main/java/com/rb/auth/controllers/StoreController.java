@@ -31,11 +31,12 @@ public class StoreController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PostMapping("/sale")
     public ResponseEntity<String> processSale(@RequestBody CreatedSaleDTO createdSaleDTO) {
         try {
             var sale = storeService.processSale(createdSaleDTO);
-            return ResponseEntity.ok().body("Sale processed with ID: " );
+            return ResponseEntity.ok().body("Sale processed with ID: ");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -51,7 +52,7 @@ public class StoreController {
     }
 
     @GetMapping("/{id}/stock")
-    public ResponseEntity getStock (@PathVariable String id) {
+    public ResponseEntity getStock(@PathVariable String id) {
         try {
             return ResponseEntity.ok().body(storeService.getStock(id));
         } catch (IllegalArgumentException e) {
