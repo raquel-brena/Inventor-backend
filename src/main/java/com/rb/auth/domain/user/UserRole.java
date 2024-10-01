@@ -1,9 +1,10 @@
 package com.rb.auth.domain.user;
 
+
 public enum UserRole {
     ADMIN("admin"),
     GERENTE("gerente"),
-    FUNCIONARIO ("funcionario"),
+    FUNCIONARIO("funcionario"),
     USER("user");
 
     private String role;

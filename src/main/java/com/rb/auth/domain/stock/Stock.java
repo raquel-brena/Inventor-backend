@@ -1,21 +1,15 @@
 package com.rb.auth.domain.stock;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rb.auth.domain.history.ActionRecord;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.store.Store;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Table(name = "stock")
 @Entity(name = "stock")

@@ -1,17 +1,12 @@
 package com.rb.auth.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.rb.auth.domain.enums.Category;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import com.rb.auth.domain.enums.Category;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,5 +21,6 @@ public class CategoryController {
 
         return ResponseEntity.ok(categories);
     }
-    
+
+
 }

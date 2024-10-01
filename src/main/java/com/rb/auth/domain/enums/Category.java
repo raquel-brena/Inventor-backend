@@ -10,7 +10,7 @@ public enum Category {
     BEAUTY("personal care"), 
     PET_SUPPLIES("pet care");
 
-    private String category;
+    private final String category;
 
     Category(String category) {
         this.category = category;

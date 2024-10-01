@@ -1,26 +1,14 @@
 package com.rb.auth.domain.product;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.rb.auth.domain.enums.Category;
-import com.rb.auth.domain.enums.Gender;
-import com.rb.auth.domain.enums.Status;
-import com.rb.auth.domain.enums.Unit;
-
 import com.rb.auth.domain.notes.Note;
 import com.rb.auth.domain.order.Order;
 import com.rb.auth.domain.stock.Stock;
-
 import jakarta.persistence.*;
-
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "product")
 @Entity(name = "product")

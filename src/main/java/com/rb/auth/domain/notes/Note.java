@@ -2,10 +2,7 @@ package com.rb.auth.domain.notes;
 
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.user.User;
-
-
 import jakarta.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

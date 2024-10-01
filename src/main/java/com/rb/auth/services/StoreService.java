@@ -4,23 +4,19 @@ import com.rb.auth.controllers.SaleController;
 import com.rb.auth.controllers.StockController;
 import com.rb.auth.controllers.UserController;
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.order.CreateOrderDTO;
 import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.SaleProductDTO;
+import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.sale.CreatedSaleDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.store.CreateStoreResponseDTO;
 import com.rb.auth.domain.store.Store;
-import com.rb.auth.repositories.AddressRepository;
 import com.rb.auth.repositories.StoreRepository;
-import com.rb.auth.services.AddressService;
-import com.rb.auth.services.SaleService;
 import com.rb.auth.services.store.IStoreService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,32 +34,26 @@ public class StoreService implements IStoreService {
     AddressService addressService;
 
     @Autowired
-    SaleController saleController;
+    SaleService saleService;
 
     @Autowired
-    StockController stockController;
+    StockService stockService;
 
+    @Transactional
     public String createStore (CreateStoreResponseDTO dto) {
         System.out.println(dto.address().state());
         Address address = this.addressService.createAddress(dto.address());
 
         if (this.storeRepository.findByName(dto.name()).isPresent()) {
-            throw new Error("Store already exists");
+            throw new IllegalArgumentException("Store already exists");
         }
-        Stock stock = this.stockController.createStock();
 
         var store = new Store();
         store.setAddress(address);
         store.setName(dto.name());
-        store.setStock(stock);
+        store.setStock(this.stockService.createStock());
 
         var storeCreated = this.storeRepository.save(store);
-
-        stock.setStore(storeCreated);
-        address.setStore(storeCreated);
-
-        this.stockController.updateStock(stock);
-        this.addressService.updateAddress(address);
 
         return storeCreated.getId();
     }
@@ -73,31 +63,41 @@ public class StoreService implements IStoreService {
     }
 
 
-    public Long stockProducts(String storeId, List<CreateProductRequestDTO> products) {
+    public Long updateStockProducts(String storeId, List<UpdateProductStockDTO> products) {
         var store = this.storeRepository.findById(storeId);
+
         if (store.isEmpty()) {
             throw new Error("Store doesnt exist");
         }
 
-        return this.stockController.stockProducts(store.get().getStock(), products);
+        return this.stockService.updateStockProducts(store.get().getStock().getId(), products);
 
     }
 
     @Override
+    @Transactional
     public String processSale(CreatedSaleDTO saleDTO) {
-        Optional<Store> store = this.storeRepository.findById(saleDTO.storeId());
+        var store = this.storeRepository.findById(saleDTO.storeId())
+                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
 
-        if (store.isEmpty()) throw new Error("Store doesnt exists");
-
-        var stock = store.get().getStock();
+        var stock = store.getStock();
 
         var author = this.userController.getUserById(saleDTO.authorId());
+        //verificar no stock
+        //se houver todas as quantidades necessarias, ocntinuar
 
-        var sale = this.saleController.createNewSale(stock, saleDTO.productsDTO(), author, saleDTO.discount());
+        var sale = this.saleService.createNewSale(stock, saleDTO.productsDTO(), author, saleDTO.discount());
 
-        store.get().getSales().add(sale);
+        //
+        store.getSales().add(sale);
 
         return "";
+    }
+
+    public Store getStore (String id) {
+        var store = this.storeRepository.findById(id);
+        if (store.isEmpty()) throw new Error ("Store doesnt exists");
+        return store.get();
     }
 
     @Override
@@ -110,6 +110,17 @@ public class StoreService implements IStoreService {
         return null;
     }
 
+    public Stock getStock(String storeId){
+        var store =  this.storeRepository.findById(storeId)
+                .orElseThrow(()-> new IllegalArgumentException("Store doesnt exists"));
+
+        var stock = store.getStock();
+        if (stock == null) {
+            throw new IllegalArgumentException("No stock found for store with ID " + storeId);
+        }
+
+        return stock;
+    }
 
 
 

@@ -1,18 +1,10 @@
 package com.rb.auth.domain.product;
 
-import org.springframework.format.annotation.NumberFormat;
-
-import com.rb.auth.domain.enums.Category;
-import com.rb.auth.domain.enums.Gender;
-import com.rb.auth.domain.stock.Stock;
-import com.rb.auth.domain.enums.Status;
-import com.rb.auth.domain.enums.Unit;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+import org.springframework.format.annotation.NumberFormat;
 
 public record CreateProductRequestDTO(
         @NotBlank
@@ -24,20 +16,32 @@ public record CreateProductRequestDTO(
         @NumberFormat(style = NumberFormat.Style.NUMBER)
         int variants,
         @NotNull
-        Stock stock,
-        @NotNull
-        Gender gender,
+        String gender,
         float retail_price,
         float wholesale_price,
         @NotNull
         String sku,
         @NotNull
-        Status status,
+        String status,
         String barcode,
-        Unit unit,
+        String unit,
         @NotNull
-        Category category,
+        String category,
         @NotBlank
         Integer quantity
 ) {
+        public CreateProductRequestDTO(Product product){
+                this(product.getName(),
+                        product.getDescription(),
+                        product.getVariants(),
+                        product.getGender(),
+                        product.getRetail_price(),
+                        product.getWholesale_price(),
+                        product.getSku(),
+                        product.getStatus(),
+                        product.getBarcode(),
+                        product.getUnit(),
+                        product.getCategory(),
+                product.getOnHand());
+        };
 }

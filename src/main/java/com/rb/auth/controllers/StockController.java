@@ -1,74 +1,64 @@
 package com.rb.auth.controllers;
 
-import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.SaleProductDTO;
+import com.rb.auth.domain.stock.CreateStockDTO;
 import com.rb.auth.domain.stock.Stock;
-import com.rb.auth.domain.stock.StockRequestDTO;
-import com.rb.auth.repositories.StockRepository;
+import com.rb.auth.domain.stock.UpdateStockedProductsDTO;
+import com.rb.auth.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/stock")
 public class StockController {
 
     @Autowired
-    StockRepository repository;
+    private StockService stockService;
 
-    @Autowired
-    ProductController productController;
+    @PostMapping
+    public ResponseEntity<String> createStock() {
+        var stock = stockService.createStock();
 
-    public Stock createStock () {
-        return repository.save(new Stock());
+        var location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(stock.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body("Stock created with ID: " + stock.getId());
     }
-
 
     @GetMapping("/{id}")
-    public ResponseEntity getStock (@PathVariable String id) {
-
-        return ResponseEntity.ok().body(this.repository.findById(Long.valueOf(id)));
+    public ResponseEntity<Stock> getStock(@PathVariable String id) {
+        Stock stock = stockService.getStockById(Long.valueOf(id));
+        return ResponseEntity.ok(stock);
     }
 
-
-     public Product getProductIfExists (Stock stock, String productId){
-        var exists = stock.getProducts()
-                .stream()
-                .filter(product -> product.getId().equals(productId)).findFirst();
-
-         return exists.orElse(null);
-     }
-
-    public Stock updateStock(Stock stock) {
-        if (repository.findById(stock.getId()).isEmpty()) {
-            throw new Error("Stock not found");
-        }
-
-        return repository.save(stock);
+    @PutMapping("/{id}")
+    public ResponseEntity<Stock> updateStock(@PathVariable String id, @RequestBody Stock stock) {
+        Stock updatedStock = stockService.updateStock(stock);
+        return ResponseEntity.ok(updatedStock);
     }
 
-    public Long stockProducts(Stock stock, List<CreateProductRequestDTO> products) {
-        List <Product> productsToStock = new ArrayList<>();
-
-        for (CreateProductRequestDTO dto : products) {
-            var product = this.productController.createProduct(dto);
-            productsToStock.add(product);
-        }
-
-        stock.setProducts(productsToStock);
-
-
-        return this.repository.save(stock).getId();
+    @PostMapping("/products")
+    public ResponseEntity stockProductList (@RequestBody UpdateStockedProductsDTO dto){
+        this.stockService.updateStockProducts(dto.stockId(), dto.products());
+        return ResponseEntity.ok().body("");
     }
 
-     public boolean checkIfHasStock (int quantityProduct, int quantitySale) {
-        return quantityProduct < quantitySale;
+    @PostMapping("/{id}/products")
+    public ResponseEntity<String> getProducts(@PathVariable String id) {
+        var productsList = stockService.getProducts(Long.valueOf(id));
+        return ResponseEntity.ok().body("Products: "+ productsList);
+    }
+
+    @GetMapping("/hasStock")
+    public ResponseEntity<Boolean> checkIfHasStock(@RequestParam int quantityProduct, @RequestParam int quantitySale) {
+        boolean hasStock = stockService.checkIfHasStock(quantityProduct, quantitySale);
+        return ResponseEntity.ok(hasStock);
     }
 }

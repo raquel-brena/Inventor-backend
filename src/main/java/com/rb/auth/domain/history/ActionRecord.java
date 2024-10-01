@@ -3,17 +3,7 @@ package com.rb.auth.domain.history;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.user.User;
-
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,15 +24,16 @@ public class ActionRecord  {
     private Long id;
 
     @ManyToOne
-    private Stock stockId;
+    @JoinColumn(name = "stock_id", referencedColumnName = "id")
+    private Stock stock;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Stock author;
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private User author;
 
     @Column(nullable = false)
     private String action;

@@ -1,12 +1,15 @@
 package com.rb.auth.services.store;
 
 import com.rb.auth.domain.product.Product;
+import com.rb.auth.domain.sale.CreatedSaleDTO;
 
 public interface IStoreService {
 
         void generateInvetoryReport();
-        String processSale(String storeId,String productId, int quantity);
-        String restockProduct(String storeId,String productId, int quantity);
+        String processSale(CreatedSaleDTO createdSaleDTO);
+
+
+        String restockProduct(String storeId, String productId, int quantity);
         Product findProductByName (String storeId,String productId);
 
 

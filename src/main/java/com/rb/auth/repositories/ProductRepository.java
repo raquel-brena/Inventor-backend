@@ -1,11 +1,9 @@
 package com.rb.auth.repositories;
 
-import com.rb.auth.domain.enums.Category;
 import com.rb.auth.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

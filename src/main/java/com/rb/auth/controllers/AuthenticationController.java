@@ -6,16 +6,22 @@ import com.rb.auth.domain.user.ResponseLoginDTO;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
+import com.rb.auth.services.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired
@@ -23,6 +29,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     UserRepository repository;
@@ -39,12 +48,28 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-     if (this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        try {
+            if (this.repository.findByLogin(data.login()) != null) throw new IllegalArgumentException ("User already exists");
 
-     String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
+            String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
-     this.repository.save(new User(data.login(), encryptedPassword));
-     return ResponseEntity.ok().build();
+            var role = roleService.findRoleByName("user");
+
+            if (role.isEmpty()) throw new IllegalArgumentException ("Role doesnt exists");
+
+            var newUser = this.repository.save(new User(data.login(), encryptedPassword, role.get()));
+
+            var location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(newUser.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).body("New user created with ID: " + newUser.getId());
+        } catch (IllegalArgumentException e ) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 }

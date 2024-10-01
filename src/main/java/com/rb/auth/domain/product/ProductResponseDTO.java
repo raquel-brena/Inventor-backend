@@ -1,40 +1,35 @@
 package com.rb.auth.domain.product;
 
-import com.rb.auth.domain.enums.Category;
-import com.rb.auth.domain.enums.Gender;
-import com.rb.auth.domain.enums.Status;
-import com.rb.auth.domain.enums.Unit;
-import com.rb.auth.domain.stock.Stock;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateProductResponseDTO(
+public record ProductResponseDTO(
       @NotBlank
         String name,
         String description,
         @NotBlank
         int variants,
         @NotNull
-        Stock stock,
-        @NotNull
-        Gender gender,
+      String gender,
         float retail_price,
         float wholesale_price,
         @NotNull
         String sku,
         @NotNull
-        Status status,
+      String status,
         String barcode,
-        Unit unit,
+      String unit,
         @NotNull
-        Category category) {
+      String category,
 
-    public CreateProductResponseDTO(Product product){
+       @NotBlank
+              Integer quantity
+) {
+
+    public ProductResponseDTO(Product product){
         this(product.getName(), 
         product.getDescription(), 
         product.getVariants(),
-        product.getStock(),
         product.getGender(),
         product.getRetail_price(),
         product.getWholesale_price(),
@@ -42,6 +37,7 @@ public record CreateProductResponseDTO(
         product.getStatus(),
         product.getBarcode(),
         product.getUnit(),
-        product.getCategory());
+        product.getCategory(),
+                product.getOnHand());
     };
     }
