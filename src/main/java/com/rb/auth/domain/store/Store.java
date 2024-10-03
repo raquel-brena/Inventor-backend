@@ -1,6 +1,7 @@
 package com.rb.auth.domain.store;
 
 import com.rb.auth.domain.address.Address;
+import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.sale.Sale;
 import com.rb.auth.domain.stock.Stock;
 import jakarta.persistence.*;
@@ -29,9 +30,8 @@ public class Store {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne
-    @JoinColumn(name = "stock_id", referencedColumnName = "id")
-    private Stock stock;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Product> stock;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Sale> sales;

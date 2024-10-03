@@ -47,7 +47,7 @@ public class StoreController {
         try {
             return ResponseEntity.ok().body(storeService.getStore(id));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class StoreController {
         try {
             return ResponseEntity.ok().body(storeService.getStock(id));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
