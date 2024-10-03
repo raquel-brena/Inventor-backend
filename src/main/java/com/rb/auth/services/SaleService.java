@@ -2,7 +2,6 @@ package com.rb.auth.services;
 
 import com.rb.auth.domain.enums.Status;
 import com.rb.auth.domain.order.Order;
-import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.sale.CreatedSaleDTO;
@@ -70,7 +69,7 @@ public class SaleService {
     }
 
 
-    public Product getProductsFromStock(List<Product> stock,UpdateProductStockDTO dto) {
+    public Product getProductsFromStock(List<Product> stock, UpdateProductStockDTO dto) {
         var product = new Product();
         for (Product p : stock) {
             if (!(p.getId().equals(dto.productId()))) throw new IllegalArgumentException("");

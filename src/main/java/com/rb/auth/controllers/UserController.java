@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RestController
-@RequestMapping ("/api/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -31,22 +31,22 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity updateUser (@RequestBody @Validated UpdateUserDTO dto ) {
-      var user =  this.userRepository.findById(dto.userId()).orElseThrow(() ->  new IllegalArgumentException("User doesnt exist"));
+    public ResponseEntity updateUser(@RequestBody @Validated UpdateUserDTO dto) {
+        var user = this.userRepository.findById(dto.userId()).orElseThrow(() -> new IllegalArgumentException("User doesnt exist"));
 
-      var role = user.getRole();
-      if (!(dto.roleId() == null)) {
-          role = this.roleRepository.findById(dto.roleId()).orElseThrow(()-> new IllegalArgumentException("Role doesnt exist"));
-      }
+        var role = user.getRole();
+        if (!(dto.roleId() == null)) {
+            role = this.roleRepository.findById(dto.roleId()).orElseThrow(() -> new IllegalArgumentException("Role doesnt exist"));
+        }
 
         if (dto.login() != null) {
             user.setLogin(dto.login());
         }
 
-      user.setRole(role);
-      this.userRepository.save(user);
+        user.setRole(role);
+        this.userRepository.save(user);
 
-      return ResponseEntity.ok().body("User updated with ID: " + user.getId());
+        return ResponseEntity.ok().body("User updated with ID: " + user.getId());
     }
 
     public User getUserById(String id) {

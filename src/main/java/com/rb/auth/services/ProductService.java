@@ -25,7 +25,7 @@ public class ProductService {
 
         if (product.isPresent())
             throw new IllegalArgumentException("Product already exists: " + product.get().getName() + " sku: " + product.get().getSku());
-var stock = this.stockService.createStock();
+        var stock = this.stockService.createStock();
         return this.repository.save(new Product(dto, stock));
     }
 
@@ -40,7 +40,7 @@ var stock = this.stockService.createStock();
         return this.repository.save(updatedProduct);
     }
 
-    public void save (Product product) {
+    public void save(Product product) {
         this.repository.save(product);
     }
 

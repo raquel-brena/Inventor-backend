@@ -26,16 +26,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class AuthenticationController {
 
     @Autowired
+    UserRepository repository;
+    @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private RoleService roleService;
-
-    @Autowired
-    UserRepository repository;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticatedDTO data) {

@@ -9,7 +9,6 @@ import com.rb.auth.domain.sale.Sale;
 import com.rb.auth.domain.store.CreateStoreResponseDTO;
 import com.rb.auth.domain.store.Store;
 import com.rb.auth.repositories.StoreRepository;
-import com.rb.auth.services.store.IStoreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,8 +70,8 @@ public class StoreService {
 
 
     public Store getStore(String id) {
-       return this.storeRepository.findById(id)
-               .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
+        return this.storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
     }
 
 
@@ -94,7 +93,7 @@ public class StoreService {
 
     @Transactional
     public String addProductToStock(String storeId, CreateProductRequestDTO productDTO) {
-        Store store =  getStore(storeId);
+        Store store = getStore(storeId);
 
         var newProduct = this.productService.createProduct(productDTO);
 
@@ -122,7 +121,6 @@ public class StoreService {
 //        return this.stockService.updateStockProducts(store.get().getStock(), products);
 //
 //    }
-
 
 
 }

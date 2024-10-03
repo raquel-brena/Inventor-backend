@@ -1,15 +1,10 @@
 package com.rb.auth.services;
 
-import com.rb.auth.domain.product.CreateProductRequestDTO;
-import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
