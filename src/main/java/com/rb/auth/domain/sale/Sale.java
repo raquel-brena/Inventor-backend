@@ -1,5 +1,6 @@
 package com.rb.auth.domain.sale;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rb.auth.domain.order.Order;
 import com.rb.auth.domain.store.Store;
 import com.rb.auth.domain.user.User;
@@ -26,12 +27,14 @@ public class Sale {
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "store_id", referencedColumnName = "id")
+    @JoinColumn(name = "store_id")
     private Store store;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User author;
 
     @Column(nullable = false)

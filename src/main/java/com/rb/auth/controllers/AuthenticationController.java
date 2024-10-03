@@ -7,6 +7,7 @@ import com.rb.auth.domain.user.User;
 import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
 import com.rb.auth.services.RoleService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseLoginDTO(token));
     }
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         try {
@@ -55,11 +57,8 @@ public class AuthenticationController {
 
             String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
-            var role = roleService.findRoleByName("user");
-
-            if (role.isEmpty()) throw new IllegalArgumentException("Role doesnt exists");
-
-            var newUser = this.repository.save(new User(data.login(), encryptedPassword, role.get()));
+            var role = roleService.findRoleByName("USER");
+            var newUser = this.repository.save(new User(data.login(), encryptedPassword, role));
 
             var location = ServletUriComponentsBuilder
                     .fromCurrentRequest()

@@ -26,13 +26,14 @@ public class Stock {
 
     @JsonIgnore
     @OneToOne(mappedBy = "stock")
-    private Store store;
-
-    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private Product product;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<ActionRecord> history;
+
+    private int onHand;
+    private int toBeReceived;
+    private int toBePacked;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

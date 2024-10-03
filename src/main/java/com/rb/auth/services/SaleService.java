@@ -7,6 +7,7 @@ import com.rb.auth.domain.sale.Sale;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.repositories.SaleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,10 @@ public class SaleService {
     @Autowired
     SaleRepository saleRepository;
 
-    public Sale createNewSale(Stock stock, List<UpdateProductStockDTO> productsDTO, User author, int discount) {
-        var orders = this.processOrders(stock, productsDTO);
+
+    @Transactional
+    public Sale createNewSale(List<Product> products, User author, int discount) {
+        var orders = this.processOrders(products, products);
         var newSale = new Sale();
 
         var totalWithDiscount = calculateTotal(orders, discount);
@@ -36,7 +39,7 @@ public class SaleService {
         return this.saleRepository.save(newSale);
     }
 
-    public List<Order> processOrders(Stock stock, List<UpdateProductStockDTO> productsDTO) {
+    public List<Order> processOrders(List<Product> products, List<UpdateProductStockDTO> productsDTO) {
         List<Order> orders = new ArrayList<>();
 
         for (UpdateProductStockDTO productDTO : productsDTO) {
@@ -48,15 +51,14 @@ public class SaleService {
 
     }
 
-    public Product getProductsFromStock(Stock stock, UpdateProductStockDTO dto) {
-        //pegar os produtos do estoque e verificar se o contain o id informado
-        var productsStock = stock.getProducts();
-        for (Product p : productsStock) {
+    public Product getProductsFromStock(List<Product> stock,UpdateProductStockDTO dto) {
+        var product = new Product();
+        for (Product p : stock) {
             if (!(p.getId().equals(dto.productId()))) throw new IllegalArgumentException("");
-            if (p.getOnHand() <= dto.quantity()) throw new IllegalArgumentException("");
-            return p;
-
+            if (p.getStock().getOnHand() <= dto.quantity()) throw new IllegalArgumentException("");
+            product = p;
         }
+        return product;
     }
 
     public float calculateTotal(List<Order> orders, int discount) {

@@ -26,17 +26,32 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
+//product, stock, address, role, order, note, actionRecord, user,
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/store/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/store/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/roles").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/product/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/stock/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/address").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/order").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/note").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/action").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/stock/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/product").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/store/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/roles").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/address").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/order").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/note").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/action").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/stock/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/user/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(Customizer.withDefaults())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
