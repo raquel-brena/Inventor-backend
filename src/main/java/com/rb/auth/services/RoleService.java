@@ -25,8 +25,8 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Optional<Role> findRoleByName(String name) {
-        return this.roleRepository.findByName(name);
+    public Role findRoleByName(String name) {
+        return this.roleRepository.findByName(name).orElseThrow(() -> new IllegalArgumentException("Role doesnt exist"));
     }
 
 

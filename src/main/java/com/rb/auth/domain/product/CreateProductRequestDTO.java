@@ -42,7 +42,7 @@ public record CreateProductRequestDTO(
                 product.getBarcode(),
                 product.getUnit(),
                 product.getCategory(),
-                product.getOnHand());
+                product.getStock().getOnHand());
     }
 
     ;

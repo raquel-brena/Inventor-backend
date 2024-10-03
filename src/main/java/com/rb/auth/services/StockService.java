@@ -32,12 +32,12 @@ public class StockService {
         return stock.orElseThrow(() -> new Error("Stock not found for ID: " + id));
     }
 
-    public List<ProductResponseDTO> getProducts(Long id) {
-        var stock = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Stock doesnt exists"));
-        return stock.getProducts().stream().map(ProductResponseDTO::new).toList();
-
-    }
+//    public List<ProductResponseDTO> getProducts(Long id) {
+//        var stock = this.repository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Stock doesnt exists"));
+//        return stock.getProducts().stream().map(ProductResponseDTO::new).toList();
+//
+//    }
 
     public Stock updateStock(Stock stock) {
         if (repository.findById(stock.getId()).isEmpty()) {
@@ -46,24 +46,24 @@ public class StockService {
         return repository.save(stock);
     }
 
-    public Long updateStockProducts(Long stockId, List<UpdateProductStockDTO> products) {
-        var stock = getStockById(stockId);
-
-        stock.setProducts(updateProductsListById(products));
-        return repository.save(stock).getId();
-    }
+//    public Long updateStockProducts(Long stockId, List<UpdateProductStockDTO> products) {
+//        var stock = getStockById(stockId);
+//
+//        stock.setProducts(updateProductsListById(products));
+//        return repository.save(stock).getId();
+//    }
 
     public boolean checkIfHasStock(int quantityProduct, int quantitySale) {
         return quantityProduct >= quantitySale;
     }
 
-    public Product getProductIfExists(Stock stock, String productId) {
-        return stock.getProducts().stream()
-                .filter(product -> product.getId().equals(productId))
-                .findFirst()
-                .orElseThrow(
-                        () -> new IllegalArgumentException("Produto com ID " + productId + " não encontrado no estoque com ID: " + stock.getId()));
-    }
+//    public Product getProductIfExists(Stock stock, String productId) {
+//        return stock.getProducts().stream()
+//                .filter(product -> product.getId().equals(productId))
+//                .findFirst()
+//                .orElseThrow(
+//                        () -> new IllegalArgumentException("Produto com ID " + productId + " não encontrado no estoque com ID: " + stock.getId()));
+//    }
 
     public List<Product> updateProductsListById(List<UpdateProductStockDTO> products) {
         var productList = new ArrayList<Product>();

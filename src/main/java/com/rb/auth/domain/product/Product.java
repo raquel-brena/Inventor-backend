@@ -1,8 +1,10 @@
 package com.rb.auth.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rb.auth.domain.notes.Note;
 import com.rb.auth.domain.order.Order;
 import com.rb.auth.domain.stock.Stock;
+import com.rb.auth.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -53,13 +55,14 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Note> notes;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stock_id")
+    @OneToOne
+    @JoinColumn(name = "stock_id", referencedColumnName = "id")
     private Stock stock;
 
-    private int onHand;
-    private int toBeReceived;
-    private int toBePacked;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
