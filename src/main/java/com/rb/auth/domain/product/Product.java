@@ -56,7 +56,7 @@ public class Product {
     private List<Note> notes;
 
     @OneToOne
-    @JoinColumn(name = "stock_id", referencedColumnName = "id")
+    @JoinColumn(name = "stock_id")
     private Stock stock;
 
     @JsonIgnore
@@ -68,7 +68,7 @@ public class Product {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public Product(CreateProductRequestDTO data) {
+    public Product(CreateProductRequestDTO data, Stock stock) {
         this.name = data.name();
         this.description = data.description();
         this.gender = data.gender();
@@ -80,5 +80,6 @@ public class Product {
         this.category = data.category();
         this.sku = data.sku();
         this.variants = data.variants();
+        this.stock = stock;
     }
 }

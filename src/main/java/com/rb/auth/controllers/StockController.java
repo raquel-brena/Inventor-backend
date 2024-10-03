@@ -1,7 +1,6 @@
 package com.rb.auth.controllers;
 
 import com.rb.auth.domain.stock.Stock;
-import com.rb.auth.domain.stock.UpdateStockedProductsDTO;
 import com.rb.auth.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,17 +39,6 @@ public class StockController {
         return ResponseEntity.ok(updatedStock);
     }
 
-    @PostMapping("/products")
-    public ResponseEntity stockProductList(@RequestBody UpdateStockedProductsDTO dto) {
-        this.stockService.updateStockProducts(dto.stockId(), dto.products());
-        return ResponseEntity.ok().body("");
-    }
-
-    @PostMapping("/{id}/products")
-    public ResponseEntity<String> getProducts(@PathVariable String id) {
-        var productsList = stockService.getProducts(Long.valueOf(id));
-        return ResponseEntity.ok().body("Products: " + productsList);
-    }
 
     @GetMapping("/hasStock")
     public ResponseEntity<Boolean> checkIfHasStock(@RequestParam int quantityProduct, @RequestParam int quantitySale) {

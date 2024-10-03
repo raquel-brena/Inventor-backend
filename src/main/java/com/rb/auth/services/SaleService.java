@@ -1,10 +1,13 @@
 package com.rb.auth.services;
 
+import com.rb.auth.domain.enums.Status;
 import com.rb.auth.domain.order.Order;
+import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.product.UpdateProductStockDTO;
+import com.rb.auth.domain.sale.CreatedSaleDTO;
 import com.rb.auth.domain.sale.Sale;
-import com.rb.auth.domain.stock.Stock;
+import com.rb.auth.domain.store.Store;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.repositories.SaleRepository;
 import jakarta.transaction.Transactional;
@@ -22,10 +25,37 @@ public class SaleService {
     @Autowired
     SaleRepository saleRepository;
 
+    @Autowired
+    ProductService productService;
 
     @Transactional
-    public Sale createNewSale(List<Product> products, User author, int discount) {
-        var orders = this.processOrders(products, products);
+    public Sale createSale(CreatedSaleDTO saleDTO, User author, int discount, Store store) {
+
+        List<Order> orders = new ArrayList<>();
+
+        for (UpdateProductStockDTO pDTO : saleDTO.productsDTO()) {
+            var product = this.productService.getProductById(pDTO.productId());
+
+            if (product.getStock().getOnHand() < pDTO.quantity()) {
+                throw new IllegalArgumentException("Invalid quantity for product: " + product.getName());
+            }
+
+            var newQuantityOnHand = product.getStock().getOnHand() - pDTO.quantity();
+            var newQuantityToBePacked = product.getStock().getToBePacked() + pDTO.quantity();
+
+            if (newQuantityOnHand == 0) {
+                product.setStatus(Status.INACTIVE.getStatus());
+            }
+
+            var stock = product.getStock();
+            stock.setOnHand(newQuantityOnHand);
+            stock.setToBePacked(newQuantityToBePacked);
+
+            var newOrder = this.orderService.createOrder(product, pDTO.quantity());
+            orders.add(newOrder);
+
+            this.productService.save(product);
+        }
         var newSale = new Sale();
 
         var totalWithDiscount = calculateTotal(orders, discount);
@@ -34,22 +64,11 @@ public class SaleService {
         newSale.setOrders(orders);
         newSale.setClosed(true);
         newSale.setTotal(totalWithDiscount);
-
+        newSale.setStore(store);
 
         return this.saleRepository.save(newSale);
     }
 
-    public List<Order> processOrders(List<Product> products, List<UpdateProductStockDTO> productsDTO) {
-        List<Order> orders = new ArrayList<>();
-
-        for (UpdateProductStockDTO productDTO : productsDTO) {
-            var product = this.getProductsFromStock(stock, productDTO);
-            var newOrder = this.orderService.createOrder(product, productDTO.quantity());
-            orders.add(newOrder);
-        }
-        return orders;
-
-    }
 
     public Product getProductsFromStock(List<Product> stock,UpdateProductStockDTO dto) {
         var product = new Product();

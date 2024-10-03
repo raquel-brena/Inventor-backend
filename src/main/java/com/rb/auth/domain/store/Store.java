@@ -3,7 +3,6 @@ package com.rb.auth.domain.store;
 import com.rb.auth.domain.address.Address;
 import com.rb.auth.domain.product.Product;
 import com.rb.auth.domain.sale.Sale;
-import com.rb.auth.domain.stock.Stock;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

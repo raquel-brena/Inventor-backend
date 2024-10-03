@@ -1,12 +1,10 @@
 package com.rb.auth.controllers;
 
 
-import com.rb.auth.domain.roles.Role;
-import com.rb.auth.domain.user.User;
 import com.rb.auth.domain.user.UpdateUserDTO;
+import com.rb.auth.domain.user.User;
 import com.rb.auth.repositories.RoleRepository;
 import com.rb.auth.repositories.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

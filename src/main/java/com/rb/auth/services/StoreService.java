@@ -2,12 +2,10 @@ package com.rb.auth.services;
 
 import com.rb.auth.controllers.UserController;
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.enums.Status;
 import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.sale.CreatedSaleDTO;
-import com.rb.auth.domain.stock.Stock;
+import com.rb.auth.domain.sale.Sale;
 import com.rb.auth.domain.store.CreateStoreResponseDTO;
 import com.rb.auth.domain.store.Store;
 import com.rb.auth.repositories.StoreRepository;
@@ -16,12 +14,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
-public class StoreService implements IStoreService {
+public class StoreService {
 
     @Autowired
     StoreRepository storeRepository;
@@ -40,11 +37,10 @@ public class StoreService implements IStoreService {
 
     @Transactional
     public String createStore(CreateStoreResponseDTO dto) {
-        System.out.println(dto.address().state());
         Address address = this.addressService.createAddress(dto.address());
 
         if (this.storeRepository.findByName(dto.name()).isPresent()) {
-            throw new IllegalArgumentException("Store already exists");
+            throw new IllegalArgumentException("Store already exist");
         }
 
         var store = new Store();
@@ -56,86 +52,77 @@ public class StoreService implements IStoreService {
         return storeCreated.getId();
     }
 
-    @Override
-    public void generateInvetoryReport() {
-    }
 
-
-    public Long updateStockProducts(String storeId, List<UpdateProductStockDTO> products) {
-        var store = this.storeRepository.findById(storeId);
-
-        if (store.isEmpty()) {
-            throw new Error("Store doesnt exist");
-        }
-
-        return this.stockService.updateStockProducts(store.get().getStock(), products);
-
-    }
-
-    @Override
     @Transactional
-    public String processSale(CreatedSaleDTO saleDTO) {
+    public Sale processSale(CreatedSaleDTO saleDTO) {
         var store = this.storeRepository.findById(saleDTO.storeId())
-                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
+                .orElseThrow(() -> new IllegalArgumentException("Store doesn't exist"));
 
         var author = this.userController.getUserById(saleDTO.authorId());
 
 
-        var productsForSale = new ArrayList<Product>();
+        var sale = this.saleService.createSale(saleDTO, author, saleDTO.discount(), store);
 
-        for (UpdateProductStockDTO pDTO : saleDTO.productsDTO()) {
-            var p = this.productService.getProductById(pDTO.productId());
+        store.getSales().add(sale);
+        this.storeRepository.save(store);
 
-            if ((p.getStock().getOnHand() >= pDTO.quantity()))
-                throw new IllegalArgumentException("Quantity dont valid");
-            productsForSale.add(p);
-
-            var newQuantityOnHand = p.getStock().getOnHand() - pDTO.quantity();
-            var newQuantityToBePacked = p.getStock().getToBePacked() + pDTO.quantity();
-
-            var status = "";
-            if (newQuantityOnHand == 0) status == Status.INACTIVE.getStatus();
-            var stock = p.getStock();
-
-            stock.setOnHand(newQuantityOnHand);
-            stock.setToBePacked(newQuantityToBePacked);
-
-            var sale = this.saleService
-                    .createNewSale(store.getStock(), saleDTO.productsDTO(), author, saleDTO.discount());
-
-            //
-            store.getSales().add(sale);
-
-            return "";
-        }
+        return sale;
     }
+
 
     public Store getStore(String id) {
        return this.storeRepository.findById(id)
                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
     }
 
-    @Override
+
     public String restockProduct(String storeId, String productId, int quantity) {
         return null;
     }
 
-    @Override
-    public Product findProductByName(String storeId, String productId) {
-        return null;
+
+    public Product findProductByName(String storeId, String productName) {
+        return getStore(storeId).getStock().stream()
+                .filter(product -> product.getName().equals(productName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Product doesn't exist"));
     }
 
-    public Stock getStock(String storeId) {
-        var store = this.storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
-
-        var stock = store.getStock();
-        if (stock == null) {
-            throw new IllegalArgumentException("No stock found for store with ID " + storeId);
-        }
-
-        return stock;
+    public List<Product> getStock(String storeId) {
+        return getStore(storeId).getStock();
     }
+
+    @Transactional
+    public String addProductToStock(String storeId, CreateProductRequestDTO productDTO) {
+        Store store =  getStore(storeId);
+
+        var newProduct = this.productService.createProduct(productDTO);
+
+        newProduct.setStore(store);
+
+        store.getStock().add(newProduct);
+
+        this.storeRepository.save(store);
+
+        return newProduct.getId();
+    }
+
+
+    public void generateInvetoryReport() {
+    }
+
+
+//    public Long updateStockProducts(String storeId, List<UpdateProductStockDTO> products) {
+//        var store = this.storeRepository.findById(storeId);
+//
+//        if (store.isEmpty()) {
+//            throw new Error("Store doesnt exist");
+//        }
+//
+//        return this.stockService.updateStockProducts(store.get().getStock(), products);
+//
+//    }
+
 
 
 }

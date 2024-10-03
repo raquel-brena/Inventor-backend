@@ -1,5 +1,6 @@
 package com.rb.auth.controllers;
 
+import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.sale.CreatedSaleDTO;
 import com.rb.auth.domain.store.CreateStoreResponseDTO;
 import com.rb.auth.services.StoreService;
@@ -36,7 +37,17 @@ public class StoreController {
     public ResponseEntity<String> processSale(@RequestBody CreatedSaleDTO createdSaleDTO) {
         try {
             var sale = storeService.processSale(createdSaleDTO);
-            return ResponseEntity.ok().body("Sale processed with ID: ");
+            return ResponseEntity.ok().body("Sale processed with ID: " + sale.getId());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/product")
+    public ResponseEntity<String> addProductToStore(@PathVariable String id, @RequestBody CreateProductRequestDTO productDTO) {
+        try {
+            var productId = storeService.addProductToStock(id, productDTO);
+            return ResponseEntity.ok().body("Product added with ID: " + productId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

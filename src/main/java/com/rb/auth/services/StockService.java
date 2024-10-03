@@ -2,7 +2,6 @@ package com.rb.auth.services;
 
 import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.ProductResponseDTO;
 import com.rb.auth.domain.product.UpdateProductStockDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.repositories.StockRepository;
@@ -18,10 +17,6 @@ public class StockService {
 
     @Autowired
     private StockRepository repository;
-
-
-    @Autowired
-    private ProductService productService;
 
     public Stock createStock() {
         return repository.save(new Stock());
@@ -65,14 +60,4 @@ public class StockService {
 //                        () -> new IllegalArgumentException("Produto com ID " + productId + " não encontrado no estoque com ID: " + stock.getId()));
 //    }
 
-    public List<Product> updateProductsListById(List<UpdateProductStockDTO> products) {
-        var productList = new ArrayList<Product>();
-
-        for (UpdateProductStockDTO product : products) {
-            var productStocked = productService.getProductById(product.productId());
-            this.productService.updateProduct(new CreateProductRequestDTO(productStocked));
-        }
-
-        return productList;
-    }
 }

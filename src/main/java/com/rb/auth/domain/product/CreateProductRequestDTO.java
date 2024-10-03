@@ -28,7 +28,9 @@ public record CreateProductRequestDTO(
         @NotNull
         String category,
         @NotBlank
-        Integer quantity
+        Integer onHand,
+        Integer toBeReceived,
+        Integer toBePacked
 ) {
     public CreateProductRequestDTO(Product product) {
         this(product.getName(),
@@ -42,7 +44,9 @@ public record CreateProductRequestDTO(
                 product.getBarcode(),
                 product.getUnit(),
                 product.getCategory(),
-                product.getStock().getOnHand());
+                product.getStock().getOnHand(),
+                product.getStock().getToBeReceived(),
+                product.getStock().getToBePacked());
     }
 
     ;

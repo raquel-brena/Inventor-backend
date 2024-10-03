@@ -3,7 +3,6 @@ package com.rb.auth.domain.stock;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rb.auth.domain.history.ActionRecord;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

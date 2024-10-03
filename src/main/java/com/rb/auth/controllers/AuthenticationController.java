@@ -57,7 +57,7 @@ public class AuthenticationController {
 
             String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
-            var role = roleService.findRoleByName("USER");
+            var role = roleService.findRoleByName("ADMIN");
             var newUser = this.repository.save(new User(data.login(), encryptedPassword, role));
 
             var location = ServletUriComponentsBuilder
