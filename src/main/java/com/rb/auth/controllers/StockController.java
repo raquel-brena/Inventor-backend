@@ -1,6 +1,7 @@
 package com.rb.auth.controllers;
 
 import com.rb.auth.domain.stock.Stock;
+import com.rb.auth.domain.stock.dto.UpdateStockDTO;
 import com.rb.auth.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class StockController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Stock> updateStock(@PathVariable String id, @RequestBody Stock stock) {
-        Stock updatedStock = stockService.updateStock(stock);
+    public ResponseEntity<Stock> updateStock(@PathVariable String id, @RequestBody UpdateStockDTO dto) {
+        Stock updatedStock = stockService.updateStock(Long.valueOf(id), dto);
         return ResponseEntity.ok(updatedStock);
     }
 

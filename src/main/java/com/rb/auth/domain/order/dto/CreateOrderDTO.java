@@ -1,4 +1,4 @@
-package com.rb.auth.domain.order;
+package com.rb.auth.domain.order.dto;
 
 import com.rb.auth.domain.product.Product;
 import jakarta.validation.constraints.NotBlank;

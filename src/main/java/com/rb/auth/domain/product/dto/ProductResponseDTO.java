@@ -1,19 +1,14 @@
-package com.rb.auth.domain.product;
+package com.rb.auth.domain.product.dto;
 
-import jakarta.validation.constraints.Min;
+import com.rb.auth.domain.product.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import org.springframework.format.annotation.NumberFormat;
 
-public record CreateProductRequestDTO(
+public record ProductResponseDTO(
         @NotBlank
-        @Min(3)
         String name,
-        @Size(min = 3, max = 255)
         String description,
         @NotBlank
-        @NumberFormat(style = NumberFormat.Style.NUMBER)
         int variants,
         @NotNull
         String gender,
@@ -27,12 +22,12 @@ public record CreateProductRequestDTO(
         String unit,
         @NotNull
         String category,
+
         @NotBlank
-        Integer onHand,
-        Integer toBeReceived,
-        Integer toBePacked
+        Integer quantity
 ) {
-    public CreateProductRequestDTO(Product product) {
+
+    public ProductResponseDTO(Product product) {
         this(product.getName(),
                 product.getDescription(),
                 product.getVariants(),
@@ -44,9 +39,7 @@ public record CreateProductRequestDTO(
                 product.getBarcode(),
                 product.getUnit(),
                 product.getCategory(),
-                product.getStock().getOnHand(),
-                product.getStock().getToBeReceived(),
-                product.getStock().getToBePacked());
+                product.getStock().getOnHand());
     }
 
     ;

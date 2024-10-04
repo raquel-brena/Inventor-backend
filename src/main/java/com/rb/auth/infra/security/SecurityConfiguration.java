@@ -31,28 +31,38 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/store/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/product").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/product").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_PRODUCT", "ROLE_VIEWER_PRODUCT")
+
+                        .requestMatchers(HttpMethod.POST, "/api/store/**").hasAnyAuthority("ROLE_MANAGER_STORE", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/store/**").hasAnyAuthority("ROLE_MANAGER_STORE", "ROLE_ADMIN", "ROLE_VIEWER_STORE")
+
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/roles").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/address").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/order").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/note").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/action").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/stock/**").hasRole("ADMIN")
-
-                        .requestMatchers(HttpMethod.GET, "/product").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/store/**").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/roles").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/address").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/order").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/note").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/action").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/stock/**").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.PUT, "/api/user/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.POST, "/api/roles/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/roles").hasAuthority("ROLE_ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/address").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_ADDRESS")
+                        .requestMatchers(HttpMethod.GET, "/api/address").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_ADDRESS", "ROLE_VIEWER_ADDRESS")
+
+                        .requestMatchers(HttpMethod.POST, "/api/order").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_ORDER")
+                        .requestMatchers(HttpMethod.GET, "/api/order").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_ORDER", "ROLE_VIEWER_ORDER")
+
+                        .requestMatchers(HttpMethod.POST, "/api/note").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_NOTE")
+                        .requestMatchers(HttpMethod.GET, "/api/note").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_NOTE", "ROLE_VIEWER_NOTE")
+
+                        .requestMatchers(HttpMethod.POST, "/api/action").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/action").hasAnyAuthority("ROLE_ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/stock/**").hasAnyAuthority("ROLE_MANAGER_STORE", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/stock/**").hasAnyAuthority("ROLE_MANAGER_STORE", "ROLE_ADMIN", "ROLE_VIEWER_STOCK")
+
+                        .requestMatchers(HttpMethod.POST, "/api/user/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_USER", "ROLE_VIEWER_USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER_USER")
+                        .anyRequest().authenticated()
+                )
                 .exceptionHandling(Customizer.withDefaults())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

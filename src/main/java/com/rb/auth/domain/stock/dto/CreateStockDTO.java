@@ -1,4 +1,4 @@
-package com.rb.auth.domain.stock;
+package com.rb.auth.domain.stock.dto;
 
 import java.util.List;
 

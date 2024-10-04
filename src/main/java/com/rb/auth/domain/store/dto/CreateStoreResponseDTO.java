@@ -1,4 +1,4 @@
-package com.rb.auth.domain.store;
+package com.rb.auth.domain.store.dto;
 
 import com.rb.auth.domain.address.CreateAddressDTO;
 import jakarta.validation.constraints.Min;

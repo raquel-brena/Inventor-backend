@@ -1,4 +1,4 @@
-package com.rb.auth.domain.user;
+package com.rb.auth.domain.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

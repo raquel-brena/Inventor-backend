@@ -3,6 +3,7 @@ package com.rb.auth.domain.product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rb.auth.domain.notes.Note;
 import com.rb.auth.domain.order.Order;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.store.Store;
 import jakarta.persistence.*;

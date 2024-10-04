@@ -3,9 +3,9 @@ package com.rb.auth.services;
 import com.rb.auth.domain.enums.Status;
 import com.rb.auth.domain.order.Order;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.UpdateProductStockDTO;
-import com.rb.auth.domain.sale.CreatedSaleDTO;
+import com.rb.auth.domain.product.dto.UpdateProductStockDTO;
 import com.rb.auth.domain.sale.Sale;
+import com.rb.auth.domain.sale.dto.CreatedSaleDTO;
 import com.rb.auth.domain.store.Store;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.repositories.SaleRepository;
@@ -18,8 +18,6 @@ import java.util.List;
 
 @Service
 public class SaleService {
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     SaleRepository saleRepository;
@@ -27,8 +25,26 @@ public class SaleService {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    StoreService storeService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    UserService userService;
+
     @Transactional
-    public Sale createSale(CreatedSaleDTO saleDTO, User author, int discount, Store store) {
+    public Sale create(CreatedSaleDTO dto) {
+        var store = this.storeService.getStore(dto.storeId());
+
+        var author = this.userService.getUserById(dto.authorId());
+
+        return this.processSale(dto, author, dto.discount(), store);
+    }
+
+    @Transactional
+    public Sale processSale(CreatedSaleDTO saleDTO, User author, int discount, Store store) {
 
         List<Order> orders = new ArrayList<>();
 
@@ -55,15 +71,10 @@ public class SaleService {
 
             this.productService.save(product);
         }
-        var newSale = new Sale();
 
         var totalWithDiscount = calculateTotal(orders, discount);
 
-        newSale.setAuthor(author);
-        newSale.setOrders(orders);
-        newSale.setClosed(true);
-        newSale.setTotal(totalWithDiscount);
-        newSale.setStore(store);
+        var newSale = new Sale(orders, author, store, totalWithDiscount, true);
 
         return this.saleRepository.save(newSale);
     }

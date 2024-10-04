@@ -1,7 +1,9 @@
 package com.rb.auth.services;
 
 import com.rb.auth.domain.stock.Stock;
+import com.rb.auth.domain.stock.dto.UpdateStockDTO;
 import com.rb.auth.repositories.StockRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,37 +24,16 @@ public class StockService {
         return stock.orElseThrow(() -> new Error("Stock not found for ID: " + id));
     }
 
-//    public List<ProductResponseDTO> getProducts(Long id) {
-//        var stock = this.repository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Stock doesnt exists"));
-//        return stock.getProducts().stream().map(ProductResponseDTO::new).toList();
-//
-//    }
+    public Stock updateStock(Long id, UpdateStockDTO dto) {
+        var existingStock = getStockById(id);
 
-    public Stock updateStock(Stock stock) {
-        if (repository.findById(stock.getId()).isEmpty()) {
-            throw new Error("Stock not found");
-        }
-        return repository.save(stock);
+        BeanUtils.copyProperties(dto, existingStock, "id", "createdAt");
+
+        return repository.save(existingStock);
     }
-
-//    public Long updateStockProducts(Long stockId, List<UpdateProductStockDTO> products) {
-//        var stock = getStockById(stockId);
-//
-//        stock.setProducts(updateProductsListById(products));
-//        return repository.save(stock).getId();
-//    }
 
     public boolean checkIfHasStock(int quantityProduct, int quantitySale) {
         return quantityProduct >= quantitySale;
     }
-
-//    public Product getProductIfExists(Stock stock, String productId) {
-//        return stock.getProducts().stream()
-//                .filter(product -> product.getId().equals(productId))
-//                .findFirst()
-//                .orElseThrow(
-//                        () -> new IllegalArgumentException("Produto com ID " + productId + " não encontrado no estoque com ID: " + stock.getId()));
-//    }
 
 }

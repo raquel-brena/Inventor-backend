@@ -1,8 +1,8 @@
 package com.rb.auth.services;
 
-import com.rb.auth.domain.product.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.product.ProductResponseDTO;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
+import com.rb.auth.domain.product.dto.ProductResponseDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.repositories.ProductRepository;
 import com.rb.auth.services.exceptions.product.ProductNotFoundException;
@@ -28,7 +28,6 @@ public class ProductService {
         var stock = this.stockService.createStock();
         return this.repository.save(new Product(dto, stock));
     }
-
 
     public Product updateProduct(CreateProductRequestDTO dto) {
         var product = repository.findBySku(dto.sku())
