@@ -1,7 +1,7 @@
 package com.rb.auth.controllers;
 
 
-import com.rb.auth.domain.user.UpdateUserDTO;
+import com.rb.auth.domain.user.dto.UpdateUserDTO;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.repositories.RoleRepository;
 import com.rb.auth.repositories.UserRepository;
@@ -24,10 +24,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable String id) {
-        var user = getUserById(id);
-
-        //CreateProductResponseDTO productDto = new CreateProductResponseDTO(product);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(getUserById(id));
     }
 
     @PutMapping
