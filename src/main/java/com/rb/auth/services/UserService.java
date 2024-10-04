@@ -12,10 +12,11 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    public User getUserById (String id) {
+    public User getUserById(String id) {
         return this.repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User doesn't exist"));
     }
+
     public void logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
     }

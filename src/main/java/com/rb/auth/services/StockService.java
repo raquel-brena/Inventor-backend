@@ -3,7 +3,6 @@ package com.rb.auth.services;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.domain.stock.dto.UpdateStockDTO;
 import com.rb.auth.repositories.StockRepository;
-import org.hibernate.sql.Update;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

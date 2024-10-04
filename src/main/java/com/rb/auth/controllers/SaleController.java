@@ -20,7 +20,7 @@ public class SaleController {
     SaleService saleService;
 
     @PostMapping
-    public ResponseEntity<String> create (@RequestBody CreatedSaleDTO createdSaleDTO) {
+    public ResponseEntity<String> create(@RequestBody CreatedSaleDTO createdSaleDTO) {
         try {
             var sale = saleService.create(createdSaleDTO);
             return ResponseEntity.ok().body("Sale processed with ID: " + sale.getId());

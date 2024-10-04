@@ -8,5 +8,5 @@ public record CreatedSaleDTO(String storeId,
                              List<UpdateProductStockDTO> productsDTO,
                              String authorId,
                              int discount
-                             ) {
+) {
 }

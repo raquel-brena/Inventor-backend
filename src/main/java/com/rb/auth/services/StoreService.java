@@ -2,12 +2,10 @@ package com.rb.auth.services;
 
 import com.rb.auth.controllers.UserController;
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.sale.dto.CreatedSaleDTO;
-import com.rb.auth.domain.sale.Sale;
-import com.rb.auth.domain.store.dto.CreateStoreResponseDTO;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.store.Store;
+import com.rb.auth.domain.store.dto.CreateStoreResponseDTO;
 import com.rb.auth.repositories.StoreRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +50,6 @@ public class StoreService {
     }
 
 
-
     public Store getStore(String id) {
         return this.storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Store doesnt exists"));
@@ -93,7 +90,6 @@ public class StoreService {
 
     public void generateInvetoryReport() {
     }
-
 
 
 }

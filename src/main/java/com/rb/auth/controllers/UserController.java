@@ -1,8 +1,8 @@
 package com.rb.auth.controllers;
 
 
-import com.rb.auth.domain.user.dto.UpdateUserDTO;
 import com.rb.auth.domain.user.User;
+import com.rb.auth.domain.user.dto.UpdateUserDTO;
 import com.rb.auth.repositories.RoleRepository;
 import com.rb.auth.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

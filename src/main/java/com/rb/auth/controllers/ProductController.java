@@ -56,8 +56,10 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity updateStock (@PathVariable String id, @RequestBody UpdateProductStockDTO dto) {
+    public ResponseEntity updateStock(@PathVariable String id, @RequestBody UpdateProductStockDTO dto) {
         return ResponseEntity.ok().body("");
-    };
+    }
+
+    ;
 
 }

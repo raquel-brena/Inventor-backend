@@ -44,11 +44,11 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-            this.role.getPermissions().stream()
-                    .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission.getName().toUpperCase()))
-                    .forEach(authorities::add);
+        this.role.getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission.getName().toUpperCase()))
+                .forEach(authorities::add);
 
-            return authorities;
+        return authorities;
     }
 
     @Override

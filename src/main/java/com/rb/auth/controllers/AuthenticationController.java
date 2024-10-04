@@ -1,9 +1,9 @@
 package com.rb.auth.controllers;
 
+import com.rb.auth.domain.user.User;
 import com.rb.auth.domain.user.dto.AuthenticatedDTO;
 import com.rb.auth.domain.user.dto.RegisterDTO;
 import com.rb.auth.domain.user.dto.ResponseLoginDTO;
-import com.rb.auth.domain.user.User;
 import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
 import com.rb.auth.services.RoleService;
@@ -75,7 +75,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout () {
+    public ResponseEntity logout() {
         this.userService.logout();
         return ResponseEntity.ok(HttpStatus.OK);
     }

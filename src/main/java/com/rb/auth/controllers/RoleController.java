@@ -1,8 +1,8 @@
 package com.rb.auth.controllers;
 
 import com.rb.auth.domain.permission.dto.CreatePermissionsDTO;
-import com.rb.auth.domain.roles.dto.CreateRoleDTO;
 import com.rb.auth.domain.roles.Role;
+import com.rb.auth.domain.roles.dto.CreateRoleDTO;
 import com.rb.auth.services.RoleService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.rb.auth.services;
 
-import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.product.dto.ProductResponseDTO;
 import com.rb.auth.domain.stock.Stock;
 import com.rb.auth.repositories.ProductRepository;

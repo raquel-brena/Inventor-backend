@@ -1,7 +1,6 @@
 package com.rb.auth.controllers;
 
 import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
-import com.rb.auth.domain.sale.dto.CreatedSaleDTO;
 import com.rb.auth.domain.store.dto.CreateStoreResponseDTO;
 import com.rb.auth.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
