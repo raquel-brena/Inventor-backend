@@ -1,7 +1,8 @@
 package com.rb.auth.controllers;
 
-import com.rb.auth.domain.product.CreateProductRequestDTO;
-import com.rb.auth.domain.product.ProductResponseDTO;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
+import com.rb.auth.domain.product.dto.ProductResponseDTO;
+import com.rb.auth.domain.product.dto.UpdateProductStockDTO;
 import com.rb.auth.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,15 +55,9 @@ public class ProductController {
         return ResponseEntity.ok().body("Products: " + productResponseDTO);
     }
 
-    //    @GetMapping("/{category}")
-//    public ResponseEntity getByCategory (@PathVariable Category category) {
-//        List<CreateProductResponseDTO> products = this.repository.findByCategoryIn(category)
-//                .stream()
-//                .map(CreateProductResponseDTO::new)
-//                .toList();
-//
-//        return ResponseEntity.ok(products);
-//    }
-
+    @PostMapping("/{id}")
+    public ResponseEntity updateStock (@PathVariable String id, @RequestBody UpdateProductStockDTO dto) {
+        return ResponseEntity.ok().body("");
+    };
 
 }

@@ -1,15 +1,17 @@
 package com.rb.auth.controllers;
 
-import com.rb.auth.domain.user.AuthenticatedDTO;
-import com.rb.auth.domain.user.RegisterDTO;
-import com.rb.auth.domain.user.ResponseLoginDTO;
+import com.rb.auth.domain.user.dto.AuthenticatedDTO;
+import com.rb.auth.domain.user.dto.RegisterDTO;
+import com.rb.auth.domain.user.dto.ResponseLoginDTO;
 import com.rb.auth.domain.user.User;
 import com.rb.auth.infra.security.TokenService;
 import com.rb.auth.repositories.UserRepository;
 import com.rb.auth.services.RoleService;
+import com.rb.auth.services.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +28,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class AuthenticationController {
 
     @Autowired
-    UserRepository repository;
+    UserRepository userRepository;
+    @Autowired
+    UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -49,13 +53,13 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         try {
-            if (this.repository.findByLogin(data.login()) != null)
+            if (this.userRepository.findByLogin(data.login()) != null)
                 throw new IllegalArgumentException("User already exists");
 
             String encryptedPassword = new BCryptPasswordEncoder().encode((data.password()));
 
-            var role = roleService.findRoleByName("ADMIN");
-            var newUser = this.repository.save(new User(data.login(), encryptedPassword, role));
+            var role = roleService.findRoleByName("USER");
+            var newUser = this.userRepository.save(new User(data.login(), encryptedPassword, role));
 
             var location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -70,4 +74,9 @@ public class AuthenticationController {
 
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity logout () {
+        this.userService.logout();
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

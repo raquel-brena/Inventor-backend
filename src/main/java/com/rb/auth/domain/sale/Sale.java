@@ -46,4 +46,12 @@ public class Sale {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public Sale(List<Order> orders, User author, Store store, float totalWithDiscount, boolean closed) {
+        this.orders = orders;
+        this.author = author;
+        this.store = store;
+        this.total = totalWithDiscount;
+        this.closed = closed;
+    }
 }
