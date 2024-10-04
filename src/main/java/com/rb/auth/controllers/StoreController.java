@@ -1,8 +1,8 @@
 package com.rb.auth.controllers;
 
-import com.rb.auth.domain.product.CreateProductRequestDTO;
-import com.rb.auth.domain.sale.CreatedSaleDTO;
-import com.rb.auth.domain.store.CreateStoreResponseDTO;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
+import com.rb.auth.domain.sale.dto.CreatedSaleDTO;
+import com.rb.auth.domain.store.dto.CreateStoreResponseDTO;
 import com.rb.auth.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +33,6 @@ public class StoreController {
         }
     }
 
-    @PostMapping("/sale")
-    public ResponseEntity<String> processSale(@RequestBody CreatedSaleDTO createdSaleDTO) {
-        try {
-            var sale = storeService.processSale(createdSaleDTO);
-            return ResponseEntity.ok().body("Sale processed with ID: " + sale.getId());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 
     @PostMapping("/{id}/product")
     public ResponseEntity<String> addProductToStore(@PathVariable String id, @RequestBody CreateProductRequestDTO productDTO) {

@@ -2,11 +2,11 @@ package com.rb.auth.services;
 
 import com.rb.auth.controllers.UserController;
 import com.rb.auth.domain.address.Address;
-import com.rb.auth.domain.product.CreateProductRequestDTO;
+import com.rb.auth.domain.product.dto.CreateProductRequestDTO;
 import com.rb.auth.domain.product.Product;
-import com.rb.auth.domain.sale.CreatedSaleDTO;
+import com.rb.auth.domain.sale.dto.CreatedSaleDTO;
 import com.rb.auth.domain.sale.Sale;
-import com.rb.auth.domain.store.CreateStoreResponseDTO;
+import com.rb.auth.domain.store.dto.CreateStoreResponseDTO;
 import com.rb.auth.domain.store.Store;
 import com.rb.auth.repositories.StoreRepository;
 import jakarta.transaction.Transactional;
@@ -52,22 +52,6 @@ public class StoreService {
     }
 
 
-    @Transactional
-    public Sale processSale(CreatedSaleDTO saleDTO) {
-        var store = this.storeRepository.findById(saleDTO.storeId())
-                .orElseThrow(() -> new IllegalArgumentException("Store doesn't exist"));
-
-        var author = this.userController.getUserById(saleDTO.authorId());
-
-
-        var sale = this.saleService.createSale(saleDTO, author, saleDTO.discount(), store);
-
-        store.getSales().add(sale);
-        this.storeRepository.save(store);
-
-        return sale;
-    }
-
 
     public Store getStore(String id) {
         return this.storeRepository.findById(id)
@@ -110,17 +94,6 @@ public class StoreService {
     public void generateInvetoryReport() {
     }
 
-
-//    public Long updateStockProducts(String storeId, List<UpdateProductStockDTO> products) {
-//        var store = this.storeRepository.findById(storeId);
-//
-//        if (store.isEmpty()) {
-//            throw new Error("Store doesnt exist");
-//        }
-//
-//        return this.stockService.updateStockProducts(store.get().getStock(), products);
-//
-//    }
 
 
 }
